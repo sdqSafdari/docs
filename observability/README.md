@@ -40,7 +40,15 @@ Metrics, Logs, and Traces , plus events are types of `Telemetry data`, and are p
   - helps with anomaly detection to things like capacity planning and SLA compliance monitoring
 
 ### OpenTelemetry
-The open source `observability framework` that unifies data collection and standardizes telemetry data formats.   
+The OpenTelemetry project, sometimes abbreviated as OTel, provides a vendor-neutral,    
+open-source framework to collect, process, and export telemetry data.     
+Backed by the Cloud Native Computing Foundation,     
+it offers an API, an SDK, a standard wire protocol called OTLP for exporting data,     
+and a pluggable architecture (including the OpenTelemetry Collector) for handling ingestion, processing, and export to backends.    
+OTLP wire-protocol is used to transmit Log/Metric/Trace (signals),    
+OTLP can be used with HTTP or gRPC
+
+The open source `observability framework` that unifies data collection and standardizes telemetry data formats.    
 To send your telemetry data. you'll need a transmission protocol.     
 This could be HTTPS (or HTTP) for web apps,     
 MQTT for IoT devices,     
@@ -51,7 +59,7 @@ The instrumented data must then be sent to an observability backend(storage).
 
 Using OpenTelemetry, you can instrument your code in two primary ways:    
 - Code-based solutions via official APIs and SDKs for most languages    
-- Zero-code solutions   
+- Zero-code solutions: e.g. opentelemetry-javaagent.jar   
 
 Typically, zero-code instrumentation adds instrumentation for the libraries you’re using:   
 > Zero-code instrumentation adds the OpenTelemetry API and SDK capabilities to your application typically as an agent or agent-like installation.      
@@ -103,3 +111,4 @@ traceparent: 00-a0892f3577b34da6a3ce929d0e0e4736-f03067aa0ba902b7-01
 - [elasticsearch telemetry data](https://www.elastic.co/what-is/telemetry-data)
 - [OTel doc](https://opentelemetry.io/docs/)
 - [OTel basic concepts](https://opentelemetry.io/docs/concepts/observability-primer/)
+- [Spring blog opentelemetry](https://spring.io/blog/2025/11/18/opentelemetry-with-spring-boot)
