@@ -60,9 +60,9 @@ Typically, zero-code instrumentation adds instrumentation for the libraries youâ
 ### Distributed tracing
 Distributed tracing lets you observe requests as they propagate through complex, distributed systems.
 Distributed tracing components(signal):   
-- log
-- span
-- trace
+- Log
+- Metric
+- Trace
 
 Logs arenâ€™t enough for tracking code execution, as they usually lack contextual information, such as where they were called from.   
 They become far more useful when they are included as part of a span, or when they are correlated with a trace and a span.    

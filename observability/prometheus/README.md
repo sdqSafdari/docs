@@ -70,6 +70,9 @@ A Counter is a scalar value. It generates exactly one time series per unique com
 - Goal: To track a single, ever-increasing total.
 - Analogy: A simple click-counter hand tool. Every time you click, the single number goes up.
 
+Building dashboards and alerts of the rate of a counter per some interval of time     
+disregards the longevity of the app, letting you see aberrant(not conforming to standard) behavior long after the application has started.    
+
 ### Histogram: bucketed counter
 In Mathematics To construct a histogram, the first step is to "bucket" the range of values—    
 divide the entire range of values into a series of intervals—    
