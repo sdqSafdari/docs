@@ -65,6 +65,97 @@ Typically, zero-code instrumentation adds instrumentation for the libraries you�
 > Zero-code instrumentation adds the OpenTelemetry API and SDK capabilities to your application typically as an agent or agent-like installation.      
 > The specific mechanisms involved may differ by language, ranging from bytecode manipulation, monkey patching, or eBPF to inject calls to the OpenTelemetry API and SDK into your application.
 
+### OTeL Collector
+> The OpenTelemetry Collector is a vendor-agnostic proxy that can receive, process, and export telemetry data.     
+> It supports receiving telemetry data in multiple formats (for example, OTLP, Jaeger, Prometheus, as well as many commercial/proprietary tools) and sending data to one or more backends.     
+> It also supports processing and filtering telemetry data before it gets exported.
+
+below is a sample of otel-collector configuration yaml:    
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 1s
+    send_batch_size: 1024
+
+exporters:
+  zipkin:
+    endpoint: "http://zipkin:9411/api/v2/spans"
+    tls:
+      insecure: true
+  elasticsearch:
+    endpoints: ["http://elasticsearch:9200"]
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [zipkin, debug]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [elasticsearch, debug]
+```
+and here is the decoded span from otel-collector debug log:    
+```
+Span #0
+    Trace ID       : 7aa9df8e40b2d331265f4986903224df
+    Parent ID      : 488f2fda93eb7517
+    ID             : dbf1ac29cc32d87c
+    Name           : HTTP POST
+    Kind           : Client
+    Start time     : 2026-08-15 09:57:17.686374946 +0000 UTC
+    End time       : 2026-08-15 09:57:22.697885929 +0000 UTC
+    Status code    : Unset
+    Status message : 
+    DroppedAttributesCount: 0
+    DroppedEventsCount: 0
+    DroppedLinksCount: 0
+Attributes:
+     -> http.method: Str(POST)
+     -> http.status_code: Str(400)
+     -> http.uri: Str(http://localhost:7979/create-m)
+     -> spring.cloud.gateway.route.id: Str(first-wiremock)
+     -> spring.cloud.gateway.route.uri: Str(http://localhost:7878/)
+```
+
+### OTLP protocol
+OTLP is a general-purpose telemetry data delivery protocol designed in the scope of the OpenTelemetry project.    
+OTLP is implemented over gRPC and HTTP transports and specifies Protocol Buffers schema that is used for the payloads.    
+
+### Sampling
+> if the large majority of your requests are successful and finish with acceptable latency and no errors,    
+> you do not need 100% of your traces to meaningfully observe your applications and systems.     
+> You just need the right sampling.
+
+A trace or span is considered “sampled” or “not sampled”:    
+- Sampled: A trace or span is processed and exported. Because it is chosen by the sampler as a representative of the population, it is considered “sampled”.
+- Not sampled: A trace or span is not processed or exported. Because it is not chosen by the sampler, it is considered “not sampled”.
+
+Sampling is one of the most effective ways to reduce the costs of observability without losing visibility.    
+Kinds of Sampling:    
+- Head Sampling 
+  - Head sampling is a sampling technique used to make a sampling decision as early as possible. A decision to sample or drop a span or trace is not made by inspecting the trace as a whole.
+- Tail Sampling
+  - Tail Sampling gives you the option to sample your traces based on specific criteria derived from different parts of a trace, which isn’t an option with Head Sampling.
+  - For example to Always sample traces that contain an error
+
+Head sampling (what `management.tracing.sampling.probability` controls) decides at span creation time, before the request has even finished —     
+the app has no idea yet whether this trace will end in an error, run slow, or hit an interesting code path.      
+Tail sampling needs the complete trace — every span, from every service the request touched   
+That requires a component that sees all spans centrally and can group them by trace ID,   
+which only the Collector (not any single app instance) is positioned to do.     
+
 ### Distributed tracing
 Distributed tracing lets you observe requests as they propagate through complex, distributed systems.
 Distributed tracing components(signal):   
