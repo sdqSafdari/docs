@@ -1,4 +1,9 @@
-### Enterprise Integration patterns    
+### Enterprise Integration patterns
+Enterprise Integration Patterns covers the `Messaging Solutions` for distributed system communication.    
+and how to tackle distributed communication challenges, such as **Latency**, **Partial failure**, incompatible data models, API drift, and much more.
+
+> Asynchronous messaging is the foundation for most integration solution because its architectural style acknowledges the challenges of distributed communication, such as latency or partial failure.
+
 - Pipes-and-Filters architectural style   
 
 When we design and build a software application, we strive to provide a foundation that accurately models the application’s domain.      
@@ -45,6 +50,23 @@ Event-driven programming is software code-level paradigm where a program’s key
 Events representing occurrences or changes in the system drive the flow.     
 EDA benefits include scalability, loose coupling, and independent development and deployment of system components. It handles complex workflows, event-driven integrations, and real-time event processing.    
 
+
+### Spring Cloud Stream
+Spring Cloud Stream is a framework for building **message-driven**(Formerly Event-Driven Architecture) microservice applications. Spring Cloud Stream builds upon Spring Boot to create standalone, production-grade Spring applications     
+and uses Spring Integration to provide connectivity to message brokers.
+Spring Integration implements the *Enterprise Integration Patterns*.    
+SCS is described as Broker-agnostic event-driven microservices, functional style (Supplier/Function/Consumer), multi-binder setups, stream processing pipelines.   
+
+In Spring Cloud Stream terminology, **middleware** essentially means the underlying message broker (or messaging system).    
+To connect to a middleware you should define middleware-specific **Binder** implementations.    
+> Spring Cloud Stream provides Binder implementations for Kafka and Rabbit MQ.    
+> The framework also includes a test binder for integration testing of your applications as spring-cloud-stream application.
+
+The Binder abstraction makes it possible for a Spring Cloud Stream application to switch between different middlewares.    
+
+
 ### References
 - [confluent EDA](https://www.confluent.io/learn/event-driven-architecture/)
-- spring integration in action book
+- [spring integration in action book](https://www.amazon.de/-/en/Spring-Integration-Action-Mark-Fisher/dp/1935182439)
+- [Enterprise Integration Patterns](https://www.amazon.com/o/asin/0321200683/ref=nosim/enterpriseint-20)
+- [Spring Cloud Stream doc](https://docs.spring.io/spring-cloud-stream/reference/spring-cloud-stream.html#spring-cloud-stream-reference)
