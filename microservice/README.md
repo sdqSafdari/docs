@@ -110,6 +110,9 @@ General-purpose data models are used to persist(store) the data.
 There are several driving forces behind the adoption of NoSQL databases, including:
 - A need for greater scalability than relational databases can easily achieve,      
   including very large datasets or very high write throughput
+- While relation DB is a source of Truth because of its mature ACID transactions,     
+   Document databases historically prioritized availability and partition tolerance (the “AP” side of CAP) and     
+   often used a looser model sometimes summarized as BASE (Basically Available, Soft state, Eventual consistency)    
 - Frustration with the restrictiveness of relational schemas, and a desire for a more
   dynamic and expressive data model
 
@@ -160,6 +163,8 @@ query optimizer automatically make the  `access path`.
 > Query optimizers for relational databases are complicated beasts,     
 > and they have consumed many years of research and development effort
 
+System of record (or `source of truth`) — relational databases are frequently called this   
+because their strong ACID guarantees make them the authoritative, reliable place where data is considered correct and durable.
 
 **Relational model query optimizer**
 **Declarative vs Imperative approach**
