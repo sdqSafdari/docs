@@ -35,6 +35,11 @@ There is no list as a complete taxonomy of all things integration, a few integra
 - Shared business functions
 - Business-to-business integration
 
+**RPC Integration**:   
+Many integration approaches have aimed to make remote communications
+simple by packaging a remote data exchange into the same semantics as a local
+method call. This strategy resulted in the notion of a Remote Procedure Call
+(RPC) or Remote Method Invocation (RMI).    
 
 We will start by describing `Pipes-and-Filters architectural style`.       
 
