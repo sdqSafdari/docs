@@ -1,0 +1,91 @@
+<build>
+    <plugins>
+
+        <!--
+            Unit tests
+            *Test.java
+        -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.6.0</version>
+        </plugin>
+
+
+        <!--
+            Integration tests
+            *IT.java
+        -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.6.0</version>
+
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>integration-test</goal>
+                        <goal>verify</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+
+
+        <!--
+            Start/stop PostgreSQL
+        -->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.0</version>
+
+            <executions>
+
+                <!--
+                    mvn pre-integration-test
+                    ↓
+                    docker compose up
+                -->
+                <execution>
+                    <id>start-postgres</id>
+                    <phase>pre-integration-test</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                    <configuration>
+                        <executable>docker</executable>
+                        <arguments>
+                            <argument>compose</argument>
+                            <argument>up</argument>
+                            <argument>-d</argument>
+                        </arguments>
+                    </configuration>
+                </execution>
+
+
+                <!--
+                    post-integration-test
+                    ↓
+                    docker compose down
+                -->
+                <execution>
+                    <id>stop-postgres</id>
+                    <phase>post-integration-test</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                    <configuration>
+                        <executable>docker</executable>
+                        <arguments>
+                            <argument>compose</argument>
+                            <argument>down</argument>
+                        </arguments>
+                    </configuration>
+                </execution>
+
+            </executions>
+        </plugin>
+
+    </plugins>
+</build>
