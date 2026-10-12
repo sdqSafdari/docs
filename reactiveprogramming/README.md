@@ -178,6 +178,7 @@ non-blocking servers use a small, fixed-size thread pool (event loop workers) to
 The reactive WebClient operates in event loop style.     
 
 #### Server* and Web* classes
+Spring webflux classes are mostly in `org.springframework.web.server.`
 In Netty server we have "ServerHttpRequest" and "ServerHttpResponse" instead of traditional "HttpServletRequest" and "HttpServletResponse".    
  and "ServerWebExchange" contains both "ServerHttpRequest" and "ServerHttpResponse".    
 Spring WebFlux, similarly to Spring MVC, is designed around the front controller pattern, where a central WebHandler, the `DispatcherHandler`, pass requests to delegate components.     
@@ -185,6 +186,20 @@ Also in Netty we have org.springframework.web.server.`WebFilter` instead of jaka
 
 `HttpHandler`: basic contract for reactive http request handling, web servers(e.g. Netty) implement this interface  
 > Basic contract for HTTP request handling with non-blocking I/O and Reactive Streams back pressure.    
+ 
+Here is the whole schema:    
+```
+Netty (or Tomcat/Jetty/Undertow)
+  -> ReactorHttpHandlerAdapter        server-specific bridge
+  -> HttpHandler                      the interface: handle(ServerHttpRequest, ServerHttpResponse)
+       impl: HttpWebHandlerAdapter    builds the ServerWebExchange
+  -> ExceptionHandlingWebHandler      applies WebExceptionHandler beans
+  -> FilteringWebHandler              runs WebFilter beans
+  -> DispatcherHandler                the front controller (bean name "webHandler")
+       -> HandlerMapping -> HandlerAdapter -> HandlerResultHandler
+```
+"WebHandler" is the interface DispatcherHandler implements: handle(ServerWebExchange).     
+The ExceptionHandlingWebHandler and FilteringWebHandler wrappers are decorators around it, which is why filters and exception handlers run outside the dispatcher.     
 
 ```java
 public interface HttpHandler {
