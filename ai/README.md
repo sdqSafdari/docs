@@ -1,4 +1,4 @@
-### AI Engineering   
+## AI Engineering   
 Building applications on top of machine learning (ML) models isn’t new.     
 Long before LLMs became prominent, AI was already powering many applications,    
 including product recommendations, fraud detection, and churn prediction.    
@@ -85,6 +85,26 @@ Just like language models, multimodal models need data to scale up.
 > This book[AI Engineering] uses the term foundation models to refer 
 > to both large language models and large multimodal models.   
 
+Foundation models also mark the transition from task-specific models to general purpose models.    
+Foundation models, thanks to their scale and the way they are trained, are capable of a wide range of tasks.   
+
+Adapting an existing powerful model to your task is generally a lot easier   
+than building a model for your task from scratch.    
+
+Adapt a model to your needs:   
+- **Prompt engineering**
+  - craft detailed instructions with examples
+- **RAG**
+  - Using a database to supplement the instructions
+- **Finetuning**
+  - further train—the model on a dataset of high-quality
+
+> However, there are still many benefits task-specific models, for example,    
+> they might be a lot smaller, making them faster and cheaper to use.   
+
+### AI Engineering   
+AI engineering refers to the process of building applications on top of foundation models.    
+If traditional ML engineering involves developing ML models, AI engineering leverages existing ones.    
 
 ### Resources
 - [AI Engineering book](https://www.amazon.com/dp/1098166302)
